@@ -17,16 +17,21 @@ export const signup = async (req, res) => {
   const { email, password, name } = req.body;
 
   try {
-    if (!email && !password && !name) {
-      throw new Error("All fields are required!");
+    if (!email || !password || !name) {
+      return res.status(400).json({
+        success: false,
+        message: `All fields are required!`,
+        user: null,
+      });
     }
 
     const userAlreadyExist = await User.findOne({ email });
 
     if (userAlreadyExist) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: `User is already existed.`,
+        user: null,
       });
     }
 
@@ -43,11 +48,9 @@ export const signup = async (req, res) => {
 
     await user.save();
 
-    // createJwtAndSetCookie(res, user?.userId);
-
     await sendVerificationEmail(user?.email, verificationToken);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: `User created successfully!`,
       user: {
@@ -56,8 +59,11 @@ export const signup = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({ success: false, message: error?.message });
+    return res.status(400).json({
+      success: false,
+      message: "Network error or unexpected issue.",
+      user: null,
+    });
   }
 };
 
@@ -96,8 +102,9 @@ export const verifyEmail = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: `Server error.` });
+    res
+      .status(500)
+      .json({ success: false, message: `Server error.`, user: null });
   }
 };
 
@@ -110,13 +117,13 @@ export const login = async (req, res) => {
     if (!user) {
       return res
         .status(400)
-        .json({ success: false, message: "Invalid credentials" });
+        .json({ success: false, message: "Invalid credentials", user: null });
     }
     const isPasswordMatched = await bcryptjs.compare(password, user.password);
     if (!isPasswordMatched) {
       return res
         .status(400)
-        .json({ success: false, message: `Wrong password` });
+        .json({ success: false, message: `Wrong password`, user: null });
     }
 
     createJwtAndSetCookie(res, user._id);
@@ -133,9 +140,11 @@ export const login = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res
-      .status(400)
-      .json({ success: false, message: `Error in log in: ${error.message}` });
+    res.status(400).json({
+      success: false,
+      message: `Error in log in: ${error.message}`,
+      user: null,
+    });
   }
 };
 
@@ -235,7 +244,7 @@ export const checkAuth = async (req, res) => {
     if (!user) {
       return res
         .status(400)
-        .json({ success: false, message: `User not found` });
+        .json({ success: false, message: `User not found`, user: null });
     }
 
     res.status(200).json({
@@ -244,6 +253,8 @@ export const checkAuth = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(400).json({ success: false, message: error.message });
+    res
+      .status(400)
+      .json({ success: false, message: error.message, user: null });
   }
 };

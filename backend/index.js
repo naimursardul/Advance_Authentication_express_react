@@ -1,8 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import cookieSession from "cookie-session";
 import passport from "passport";
+import cors from "cors";
 import authRouter from "./routes/auth_routes.js";
 import { connectDB } from "./db/db.js";
 import "./passport/google-passport.config.js";
@@ -13,6 +13,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 
 app.use(
   session({

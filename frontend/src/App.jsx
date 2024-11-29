@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -30,6 +31,14 @@ function App() {
           </Routes>
         </div>
         <Footer />
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            className:
+              "bg-base-100 text-base-content text-sm px-8 py-3 font-semibold",
+            duration: 5000,
+          }}
+        />
       </div>
     </BrowserRouter>
   );

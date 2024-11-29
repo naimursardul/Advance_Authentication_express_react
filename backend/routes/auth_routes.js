@@ -13,16 +13,23 @@ import passport from "passport";
 
 const router = express.Router();
 
+// sign up
 router.post("/signup", signup);
+// Verify email
 router.post("/verify-email", verifyEmail);
+// login
 router.post("/login", login);
+//logout
 router.get("/logout", logout);
 
+// forgot password
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:resetToken", resetPassword);
 
+// check auth
 router.get("/check-auth", verifyToken, checkAuth);
 
+// google login with passport
 router.get(
   "/google",
   passport.authenticate("google", {
@@ -30,14 +37,13 @@ router.get(
     prompt: "select_account",
   })
 );
-// router.get("/google", (req, res) => res.status(300).json({ message: "hello" }));
 
+// google login callback
 router.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/login" }),
   function (req, res) {
-    // Successful authentication, redirect home.
-    res.redirect("/profile");
+    res.status(200).json({ message: "User logged in successfuly." });
   }
 );
 

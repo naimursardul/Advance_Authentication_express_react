@@ -1,9 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
 import { FaKey, FaUser } from "react-icons/fa";
 import { useState } from "react";
 import OtpInput from "react-otp-input";
+import toast from "react-hot-toast";
 import GoogleSignInSection from "../components/GoogleSignInSection";
 import InputSection from "../components/InputSection";
+import { client } from "../utils/utils.js";
+import Loader from "../components/Loader.jsx";
 
 function Signup() {
   const inputFields = [
@@ -27,12 +31,64 @@ function Signup() {
     },
   ];
 
+  const navigate = useNavigate();
+  const [data, setData] = useState({});
   const [isNext, setIsNext] = useState(false);
   const [code, setCode] = useState("");
-  console.log(code);
+  const [loading, setLoading] = useState(false);
+
+  // SUBMIT FUNCTION
+  const submitAction = async (data) => {
+    setLoading(true);
+    const { name, email, password } = data;
+    if (!(name && email && password)) {
+      setLoading(false);
+      return toast.error("Please, fill in the form correctly.");
+    }
+    try {
+      const res = await client.post(`/auth/signup`, {
+        name,
+        email,
+        password,
+      });
+
+      setLoading(false);
+      if (res.data.success) setIsNext(true);
+    } catch (error) {
+      setLoading(false);
+      if (error?.response) {
+        return toast.error(error.response.data.message || "An error occurred.");
+      }
+      return toast.error("Network error or unexpected issue.");
+    }
+  };
+
+  // SUBMIT FUNCTION
+  const onCodeSubmit = async () => {
+    setLoading(true);
+    if (!code) {
+      setLoading(false);
+      return toast.error("Please, fill in the form correctly.");
+    }
+    try {
+      const res = await client.post(`/auth/verify-email`, {
+        code,
+      });
+
+      setLoading(false);
+      if (res.data.success) navigate("/");
+    } catch (error) {
+      setLoading(false);
+      if (error?.response) {
+        return toast.error(error.response.data.message || "An error occurred.");
+      }
+      return toast.error("Network error or unexpected issue.");
+    }
+  };
 
   return (
     <div className="w-full h-full flex justify-center items-center ">
+      {loading && <Loader />}
       <div className="w-[300px] rounded-lg shadow-lg overflow-x-clip ">
         <div className={`w-full flex ${isNext && "translate-x-[-100%]"}`}>
           {/* First Input */}
@@ -40,7 +96,13 @@ function Signup() {
             <h1 className="text-xl font-semibold text-center ">
               Create your account
             </h1>
-            <InputSection inputFields={inputFields} setIsNext={setIsNext} />
+            <InputSection
+              inputFields={inputFields}
+              setData={setData}
+              data={data}
+              buttonName={"Continue"}
+              submitAction={submitAction}
+            />
             <div className="divider text-accent text-xs uppercase">
               Or continue with
             </div>
@@ -88,7 +150,12 @@ function Signup() {
                 </button>
               </div>
             </div>
-            <button className="w-full btn btn-sm btn-primary ">Submit</button>
+            <button
+              onClick={onCodeSubmit}
+              className="w-full btn btn-sm btn-primary "
+            >
+              Submit
+            </button>
           </div>
         </div>
       </div>
