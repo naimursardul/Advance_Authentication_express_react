@@ -45,6 +45,7 @@ function Login() {
       setLoading(false);
       if (res.data.success) navigate("/");
     } catch (error) {
+      console.log(error);
       setLoading(false);
       if (error?.response) {
         return toast.error(error.response.data.message || "An error occurred.");
