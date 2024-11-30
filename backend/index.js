@@ -15,8 +15,9 @@ app.use(
   cors({
     origin: [
       "https://advance-authentication-express-react.vercel.app",
-      "http://localhost:3000",
+      "http://localhost:5173",
     ],
+    optionsSuccessStatus: 200,
     credentials: true,
   })
 );
