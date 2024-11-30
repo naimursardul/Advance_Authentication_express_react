@@ -37,7 +37,7 @@ function Login() {
       return toast.error("Please, fill in the form correctly.");
     }
     try {
-      const res = await client.post(`/api/auth/login`, {
+      const res = await client.post(`/auth/login`, {
         email,
         password,
       });

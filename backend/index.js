@@ -11,8 +11,6 @@ import session from "express-session";
 dotenv.config();
 
 const app = express();
-app.use(express.json());
-app.use(cookieParser());
 app.use(
   cors({
     origin: [
@@ -22,6 +20,8 @@ app.use(
     credentials: true,
   })
 );
+app.use(express.json());
+app.use(cookieParser());
 
 app.use(
   session({
