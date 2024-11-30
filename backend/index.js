@@ -13,7 +13,15 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: process.env.FRONT_END_URL, credentials: true }));
+app.use(
+  cors({
+    origin: [
+      "https://advance-authentication-express-react.vercel.app",
+      "http://localhost:3000",
+    ],
+    credentials: true,
+  })
+);
 
 app.use(
   session({
