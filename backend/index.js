@@ -17,6 +17,7 @@ app.use(
       "https://advance-authentication-express-react.vercel.app",
       "http://localhost:5173",
     ],
+    methods: "*",
     optionsSuccessStatus: 200,
     credentials: true,
   })
