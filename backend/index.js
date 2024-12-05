@@ -26,6 +26,11 @@ app.use(
 app.options("*", cors());
 app.options("/api/auth/login", cors()); // Ensure preflight requests are handled for this route
 
+app.use((req, res, next) => {
+  console.log(`Request method: ${req.method}, URL: ${req.url}`);
+  next();
+});
+
 // app.use(
 //   cors({
 //     origin: [
