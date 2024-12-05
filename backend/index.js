@@ -37,7 +37,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get("/", (req, res) => {
-  res.send("Hello world!");
+  res.send("Hello worldss!");
 });
 
 app.get("/profile", (req, res) => res.send({ user: req.user }));
