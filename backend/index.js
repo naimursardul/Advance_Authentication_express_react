@@ -12,36 +12,14 @@ dotenv.config();
 
 const app = express();
 
-// CORS configuration
 app.use(
   cors({
-    origin: "https://advance-authentication-express-react.vercel.app", // Frontend domain
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
-    credentials: true, // Enable if you use cookies
+    origin: [
+      "https://advance-authentication-express-react.vercel.app",
+      "http://localhost:5173",
+    ],
   })
 );
-
-// Ensure preflight requests are handled
-app.options("*", cors());
-app.options("/api/auth/login", cors()); // Ensure preflight requests are handled for this route
-
-app.use((req, res, next) => {
-  console.log(`Request method: ${req.method}, URL: ${req.url}`);
-  next();
-});
-
-// app.use(
-//   cors({
-//     origin: [
-//       "https://advance-authentication-express-react.vercel.app",
-//       "http://localhost:5173",
-//     ],
-//     methods: "*",
-//     optionsSuccessStatus: 200,
-//     credentials: true,
-//   })
-// );
 app.use(express.json());
 app.use(cookieParser());
 
