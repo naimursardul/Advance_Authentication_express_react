@@ -24,6 +24,8 @@ app.use(
 
 // Ensure preflight requests are handled
 app.options("*", cors());
+app.options("/api/auth/login", cors()); // Ensure preflight requests are handled for this route
+
 // app.use(
 //   cors({
 //     origin: [
