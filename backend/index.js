@@ -2,11 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import passport from "passport";
+import session from "express-session";
 import cors from "cors";
 import authRouter from "./routes/auth_routes.js";
 import { connectDB } from "./db/db.js";
 import "./passport/google-passport.config.js";
-import session from "express-session";
 
 dotenv.config();
 
@@ -14,12 +14,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: [
-      "https://advance-authentication-express-react.vercel.app",
-      "http://localhost:5173",
-    ],
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 
