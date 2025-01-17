@@ -2,13 +2,11 @@ import express from "express";
 import {
   forgotPassword,
   resetPassword,
-  login,
   logout,
   signup,
   verifyEmail,
   checkAuth,
 } from "../controllers/auth_controllers.js";
-import { verifyToken } from "../middleware/verifyToken.js";
 import passport from "passport";
 
 const router = express.Router();
@@ -16,9 +14,40 @@ const router = express.Router();
 // sign up
 router.post("/signup", signup);
 // Verify email
-router.post("/verify-email", verifyEmail);
+router.post(
+  "/verify-email",
+  verifyEmail,
+  passport.authenticate("local"),
+  (req, res) => {
+    if (!req.user) {
+      res.status(200).json({
+        success: false,
+        message: `Email not verified successfully.`,
+        user: null,
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: `Email verified successfully.`,
+      user: req.user,
+    });
+  }
+);
 // login
-router.post("/login", login);
+router.post("/login", passport.authenticate("local"), (req, res) => {
+  if (!req.user) {
+    res.status(200).json({
+      success: false,
+      message: `Email not verified successfully.`,
+      user: null,
+    });
+  }
+  res.status(200).json({
+    success: true,
+    message: `Email verified successfully.`,
+    user: req.user,
+  });
+});
 //logout
 router.get("/logout", logout);
 
@@ -27,7 +56,7 @@ router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:resetToken", resetPassword);
 
 // check auth
-router.get("/check-auth", verifyToken, checkAuth);
+router.get("/check-auth", checkAuth);
 
 // google login with passport
 router.get(
@@ -41,10 +70,10 @@ router.get(
 // google login callback
 router.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
-  function (req, res) {
-    res.status(200).json({ message: "User logged in successfuly." });
-  }
+  passport.authenticate("google", {
+    failureRedirect: `${process.env.FRONTEND_URL}/login`,
+    successRedirect: `${process.env.FRONTEND_URL}`,
+  })
 );
 
 export default router;

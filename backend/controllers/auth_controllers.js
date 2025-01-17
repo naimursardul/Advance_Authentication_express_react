@@ -8,7 +8,6 @@ import {
   sendVerificationEmail,
   sendWelcomeEmail,
 } from "../mailtrap/email.js";
-import { createJwtAndSetCookie } from "../utils/createJwtAndSetCookie.js";
 
 dotenv.config();
 
@@ -18,7 +17,7 @@ export const signup = async (req, res) => {
 
   try {
     if (!email || !password || !name) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         message: `All fields are required!`,
         user: null,
@@ -28,7 +27,7 @@ export const signup = async (req, res) => {
     const userAlreadyExist = await User.findOne({ email });
 
     if (userAlreadyExist) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         message: `User is already existed.`,
         user: null,
@@ -68,7 +67,7 @@ export const signup = async (req, res) => {
 };
 
 // Verify Code and send welcome email
-export const verifyEmail = async (req, res) => {
+export const verifyEmail = async (req, res, next) => {
   const { code } = req.body;
 
   try {
@@ -90,61 +89,12 @@ export const verifyEmail = async (req, res) => {
 
     await user.save();
 
-    createJwtAndSetCookie(res, user._id);
     await sendWelcomeEmail(user.email, user.name);
-
-    res.status(200).json({
-      success: true,
-      message: `Email verified successfully.`,
-      user: {
-        ...user._doc,
-        password: undefined,
-      },
-    });
+    next();
   } catch (error) {
     res
       .status(500)
       .json({ success: false, message: `Server error.`, user: null });
-  }
-};
-
-// LOGIN WITH EMAIL
-export const login = async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await User.findOne({ email, isVerified: true });
-
-    if (!user) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid credentials", user: null });
-    }
-    const isPasswordMatched = await bcryptjs.compare(password, user.password);
-    if (!isPasswordMatched) {
-      return res
-        .status(400)
-        .json({ success: false, message: `Wrong password`, user: null });
-    }
-
-    createJwtAndSetCookie(res, user._id);
-    user.lastLogin = new Date();
-    await user.save();
-
-    res.status(200).json({
-      success: true,
-      message: `User logged in successfully.`,
-      user: {
-        ...user._doc,
-        password: undefined,
-      },
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      success: false,
-      message: `Error in log in: ${error.message}`,
-      user: null,
-    });
   }
 };
 
@@ -155,7 +105,9 @@ export const logout = async (req, res) => {
       req.logout((err) => {
         if (err) throw Error(err);
       });
-      return res.redirect("/");
+      return res
+        .status(200)
+        .json({ success: true, message: `User logged out successfully.` });
     }
     res.clearCookie("token");
     return res
@@ -238,22 +190,17 @@ export const resetPassword = async (req, res) => {
 
 // CHECK AUTH
 export const checkAuth = async (req, res) => {
-  const userId = req.userId;
   try {
-    const user = await User.findById(userId).select("-password");
-    if (!user) {
+    if (!req.user) {
       return res
         .status(400)
-        .json({ success: false, message: `User not found`, user: null });
+        .json({ success: false, message: "User not found.", user: null });
     }
-
-    res.status(200).json({
-      success: true,
-      user,
-    });
+    return res
+      .status(200)
+      .json({ success: true, message: `User found`, user: req.user });
   } catch (error) {
-    console.log(error);
-    res
+    return res
       .status(400)
       .json({ success: false, message: error.message, user: null });
   }

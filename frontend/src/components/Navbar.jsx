@@ -1,11 +1,35 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { HiBars3BottomLeft } from "react-icons/hi2";
 import ThemeController from "./ThemeController";
+import { useAuth } from "../utils/AuthContext";
+import { client } from "../utils/utils";
+import toast from "react-hot-toast";
 
 function Navbar() {
-  const user = false;
+  const { user, setUser, userExisted } = useAuth();
+  const navigate = useNavigate();
+
+  console.log(user);
+  // USER LOGOUT FUNCTION
+  async function logOutUser() {
+    try {
+      const res = await client.get("/auth/logout");
+      if (res?.data.success) {
+        setUser(null);
+        localStorage.removeItem("userExisted");
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+      if (error?.response) {
+        return toast.error(error.response.data.message || "An error occurred.");
+      }
+      return toast.error("Network error or unexpected issue.");
+    }
+  }
+
   return (
-    <div className="navbar bg-base-100 shadow-md px-[16px] sm:px-[50px]  ">
+    <div className="navbar bg-base-100 shadow-md px-[16px] sm:px-[50px]">
       <div className="sm:navbar-start w-full">
         <div className="dropdown lg:hidden">
           {/* Humburger & close button */}
@@ -26,8 +50,11 @@ function Navbar() {
             <li>
               <NavLink to={"/contact"}>CONTACT</NavLink>
             </li>
+            <li>
+              <NavLink to={"/profile"}>PROFILE</NavLink>
+            </li>
             <ThemeController />
-            {!user && (
+            {(!userExisted || !user) && (
               <li className="space-y-3 mt-2">
                 <NavLink to={"/login"} className="btn btn-sm btn-outline">
                   Login
@@ -57,13 +84,16 @@ function Navbar() {
           <li>
             <NavLink to={"/contact"}>CONTACT</NavLink>
           </li>
+          <li>
+            <NavLink to={"/profile"}>PROFILE</NavLink>
+          </li>
         </ul>
       </div>
       <div className="navbar-end space-x-3 ">
         <div className="hidden lg:flex">
           <ThemeController />
         </div>
-        {user ? (
+        {userExisted || user ? (
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
@@ -71,10 +101,13 @@ function Navbar() {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-8 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                />
+                {user?.img ? (
+                  <img alt="Tailwind CSS Navbar component" src={user?.img} />
+                ) : (
+                  <div className="bg-base-300 text-base-content h-full text-lg ">
+                    {user?.name.slice(0, 1).toUpperCase()}
+                  </div>
+                )}
               </div>
             </div>
             <ul
@@ -85,7 +118,7 @@ function Navbar() {
                 <NavLink to={"/profile"}>Profile</NavLink>
               </li>
               <li>
-                <button>Logout</button>
+                <button onClick={logOutUser}>Logout</button>
               </li>
             </ul>
           </div>

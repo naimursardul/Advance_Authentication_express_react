@@ -8,6 +8,7 @@ import GoogleSignInSection from "../components/GoogleSignInSection";
 import InputSection from "../components/InputSection";
 import { client } from "../utils/utils.js";
 import Loader from "../components/Loader.jsx";
+import { useAuth } from "../utils/AuthContext.jsx";
 
 function Signup() {
   const inputFields = [
@@ -32,12 +33,13 @@ function Signup() {
   ];
 
   const navigate = useNavigate();
+  const { setUser } = useAuth();
   const [data, setData] = useState({});
   const [isNext, setIsNext] = useState(false);
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // SUBMIT FUNCTION
+  // DATA SUBMIT FUNCTION
   const submitAction = async (data) => {
     setLoading(true);
     const { name, email, password } = data;
@@ -63,9 +65,11 @@ function Signup() {
     }
   };
 
-  // SUBMIT FUNCTION
+  // CODE SUBMIT FUNCTION
   const onCodeSubmit = async () => {
     setLoading(true);
+    console.log(data);
+    const { email, password } = data;
     if (!code) {
       setLoading(false);
       return toast.error("Please, fill in the form correctly.");
@@ -73,11 +77,16 @@ function Signup() {
     try {
       const res = await client.post(`/auth/verify-email`, {
         code,
+        email,
+        password,
       });
 
+      setUser(res.data?.user);
+      localStorage.setItem("userExisted", true);
       setLoading(false);
       if (res.data.success) navigate("/");
     } catch (error) {
+      setUser(null);
       setLoading(false);
       if (error?.response) {
         return toast.error(error.response.data.message || "An error occurred.");

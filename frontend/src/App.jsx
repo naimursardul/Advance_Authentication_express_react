@@ -6,9 +6,10 @@ import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
+import Signup from "./pages/Signup";
 import { Toaster } from "react-hot-toast";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -27,7 +28,15 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute
+                  actionName={"view-page"}
+                  element={<Profile />}
+                />
+              }
+            />{" "}
           </Routes>
         </div>
         <Footer />

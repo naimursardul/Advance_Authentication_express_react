@@ -7,6 +7,8 @@ import cors from "cors";
 import authRouter from "./routes/auth_routes.js";
 import { connectDB } from "./db/db.js";
 import "./passport/google-passport.config.js";
+import "./passport/local-passport.config.js";
+import "./passport/passport.config.js";
 
 dotenv.config();
 
@@ -41,6 +43,11 @@ app.get("/", (req, res) => {
 app.get("/profile", (req, res) => res.send({ user: req.user }));
 
 app.use("/api/auth", authRouter);
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ success: false, message: "Something went wrong!" });
+});
 
 app.listen(process.env.PORT, () => {
   connectDB();

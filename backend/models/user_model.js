@@ -6,6 +6,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "credentials",
     },
+    role: {
+      type: String,
+      default: "user",
+    },
     email: {
       type: String,
       required: true,
@@ -17,6 +21,9 @@ const userSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+    },
+    img: {
+      type: String,
     },
     lastLogin: {
       type: Date,

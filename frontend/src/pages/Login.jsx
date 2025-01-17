@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import toast from "react-hot-toast";
 import { client } from "../utils/utils.js";
+import { useAuth } from "../utils/AuthContext.jsx";
 
 function Login() {
   const inputFields = [
@@ -27,6 +28,7 @@ function Login() {
   const navigate = useNavigate();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  const { setUser } = useAuth();
 
   // SUBMIT FUNCTION
   const submitAction = async (data) => {
@@ -42,10 +44,13 @@ function Login() {
         password,
       });
 
+      setUser(res.data?.user);
+      localStorage.setItem("userExisted", true);
       setLoading(false);
       if (res.data.success) navigate("/");
     } catch (error) {
       console.log(error);
+      setUser(null);
       setLoading(false);
       if (error?.response) {
         return toast.error(error.response.data.message || "An error occurred.");

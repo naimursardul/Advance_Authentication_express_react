@@ -5,7 +5,6 @@ import { User } from "../models/user_model.js";
 
 dotenv.config();
 
-// export const GoogleAuthWithPassport = async () => {
 passport.use(
   new GoogleStrategy(
     {
@@ -26,6 +25,7 @@ passport.use(
           const newUser = await User.create({
             name,
             email,
+            img: picture,
             isVerified,
             provider: profile?.provider,
             lastLogin: Date.now(),
@@ -34,6 +34,9 @@ passport.use(
           await newUser.save();
           return done(null, newUser);
         }
+
+        existedUser.lastLogin = new Date();
+        await existedUser.save();
         return done(null, existedUser);
       } catch (error) {
         console.log(error);
@@ -45,15 +48,3 @@ passport.use(
 passport.serializeUser(function (user, done) {
   done(null, user._id);
 });
-
-passport.deserializeUser(async function (id, done) {
-  try {
-    const user = await User.findById(id);
-    done(null, user);
-  } catch (error) {
-    console.log(error);
-    done(error, null);
-  }
-  done(null, id);
-});
-// };
