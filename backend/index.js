@@ -10,7 +10,6 @@ import "./passport/google-passport.config.js";
 import "./passport/local-passport.config.js";
 import "./passport/passport.config.js";
 import MongoStore from "connect-mongo";
-import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -45,7 +44,7 @@ app.use(
     resave: false, // Avoid saving session if not modified
     saveUninitialized: false, // Avoid creating sessions until something is stored
     store: MongoStore.create({
-      mongoUrl: mongoose.connection._connectionString, // Reuse Mongoose connection
+      mongoUrl: process.env.MONGO_URI, // Reuse Mongoose connection
       collectionName: "sessions", // Optional, defaults to 'sessions'
       ttl: 7 * 24 * 60 * 60, // Time-to-live in seconds (7 days default)
     }),
