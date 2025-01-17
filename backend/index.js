@@ -46,14 +46,14 @@ app.use(
     saveUninitialized: false, // Avoid creating sessions until something is stored
     store: MongoStore.create({
       mongoUrl: process.env.MONGO_URI, // Reuse Mongoose connection
-      collectionName: "sessions", // Optional, defaults to 'sessions'
-      ttl: 7 * 24 * 60 * 60, // Time-to-live in seconds (7 days default)
+      collectionName: "sessions", // Optional
+      ttl: 7 * 24 * 60 * 60, // Time-to-live in seconds
     }),
     cookie: {
       secure: process.env.NODE_ENV === "production", // Send over HTTPS in production
       httpOnly: true, // Protect cookie from being accessed by client-side scripts
       maxAge: 1000 * 60 * 60 * 24 * 7, // Expiry: 7 days
-      sameSite: "Lax", // Adjust for cross-origin requirements if needed
+      sameSite: "none", // Adjust for cross-origin requirements if needed
     },
   })
 );
