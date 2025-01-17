@@ -9,6 +9,8 @@ import { connectDB } from "./db/db.js";
 import "./passport/google-passport.config.js";
 import "./passport/local-passport.config.js";
 import "./passport/passport.config.js";
+import MongoStore from "connect-mongo";
+import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -37,6 +39,25 @@ app.use(
     },
   })
 );
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET, // Replace with a strong secret
+    resave: false, // Avoid saving session if not modified
+    saveUninitialized: false, // Avoid creating sessions until something is stored
+    store: MongoStore.create({
+      mongoUrl: mongoose.connection._connectionString, // Reuse Mongoose connection
+      collectionName: "sessions", // Optional, defaults to 'sessions'
+      ttl: 7 * 24 * 60 * 60, // Time-to-live in seconds (7 days default)
+    }),
+    cookie: {
+      secure: process.env.NODE_ENV === "production", // Send over HTTPS in production
+      httpOnly: true, // Protect cookie from being accessed by client-side scripts
+      maxAge: 1000 * 60 * 60 * 24 * 7, // Expiry: 7 days
+      sameSite: "Lax", // Adjust for cross-origin requirements if needed
+    },
+  })
+);
+
 app.use(passport.initialize());
 app.use(passport.session());
 
