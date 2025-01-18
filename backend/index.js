@@ -54,7 +54,7 @@ app.use(
       secure: process.env.NODE_ENV === "production", // Send over HTTPS in production
       httpOnly: true, // Protect cookie from being accessed by client-side scripts
       maxAge: 1000 * 60 * 60 * 24 * 7, // Expiry: 7 days
-      sameSite: "lax", // Adjust for cross-origin requirements if needed
+      sameSite: "none", // Adjust for cross-origin requirements if needed
     },
   })
 );
