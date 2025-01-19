@@ -53,7 +53,7 @@ app.use(
       ttl: 7 * 24 * 60 * 60, // Time-to-live in seconds
     }),
     cookie: {
-      secure: true, // Send over HTTPS in production
+      secure: process.env.NODE_ENV === "production", // Send over HTTPS in production
       httpOnly: true, // Protect cookie from being accessed by client-side scripts
       maxAge: 1000 * 60 * 60 * 24 * 7, // Expiry: 7 days
       sameSite: "none", // Adjust for cross-origin requirements if needed
