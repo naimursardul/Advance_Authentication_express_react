@@ -10,22 +10,22 @@ async function getAllUser(req, res) {
   }
   try {
     const controller = req.user;
-    if (id !== controller?._id && controller.role !== "admin") {
+    if (controller.role !== "admin") {
       return res.status(200).json({
         success: false,
-        message: "Only admin or user can get account user's details.",
+        message: "Only admin can get account user's details.",
       });
     }
-    const allUsers = await User.find({});
+    const allUser = await User.find({});
     return res
       .status(200)
-      .json({ success: true, message: "All users found.", allUsers });
+      .json({ success: true, message: "All users found.", allUser });
   } catch (error) {
     console.log(error);
     return res.status(200).json({
       success: false,
       message: "Error in server side.",
-      allUsers: null,
+      allUser: null,
     });
   }
 }
@@ -74,6 +74,7 @@ async function updateUser(req, res) {
   }
   try {
     const controller = req.user;
+
     if (others?.password) {
       others.password = await bcryptjs.hash(others.password, 10);
     }
@@ -87,7 +88,13 @@ async function updateUser(req, res) {
       delete others.password;
     }
     // If user wants to update himself
-    if (controller?._id === id) {
+    if (controller?._id.toString() === id) {
+      if (role)
+        return res.status(200).json({
+          success: false,
+          message: "You can't change your role.",
+          user: null,
+        });
       const updatedUser = await User.findByIdAndUpdate(
         id,
         { ...others },

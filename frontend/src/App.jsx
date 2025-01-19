@@ -26,14 +26,15 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/admin" element={<Admin />} />
             <Route
               path="/profile"
               element={<ProtectedRoute roles={["all"]} element={<Profile />} />}
             />
-            <Route
+            {/* <Route
               path="/admin"
               element={<ProtectedRoute roles={["admin"]} element={<Admin />} />}
-            />
+            /> */}
             <Route
               path="/moderator"
               element={
