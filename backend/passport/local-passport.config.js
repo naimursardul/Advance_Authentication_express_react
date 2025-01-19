@@ -12,7 +12,11 @@ passport.use(
     },
     async function verify(email, password, cb) {
       try {
-        const user = await User.findOne({ email, isVerified: true });
+        const user = await User.findOne({
+          email,
+          isVerified: true,
+          provider: "credentials",
+        });
         if (!user) {
           return cb(null, false, "User not found");
         }

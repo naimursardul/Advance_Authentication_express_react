@@ -2,9 +2,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
-import Services from "./pages/Services";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
+import Admin from "./pages/Admin";
+import Moderator from "./pages/Moderator";
+import Editor from "./pages/Editor";
 import Login from "./pages/Login";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
@@ -24,20 +24,35 @@ function App() {
         <div className="sm:px-[80px] px-[16px] pb-[50px] pt-[50px]">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route
               path="/profile"
+              element={<ProtectedRoute roles={["all"]} element={<Profile />} />}
+            />
+            <Route
+              path="/admin"
+              element={<ProtectedRoute roles={["admin"]} element={<Admin />} />}
+            />
+            <Route
+              path="/moderator"
               element={
                 <ProtectedRoute
-                  actionName={"view-page"}
-                  element={<Profile />}
+                  roles={["admin", "moderator"]}
+                  element={<Moderator />}
                 />
               }
             />
+            <Route
+              path="/editor"
+              element={
+                <ProtectedRoute
+                  roles={["admin", "editor"]}
+                  element={<Editor />}
+                />
+              }
+            />
+
             <Route path="/*" element={<NotFoundPage />} />
           </Routes>
         </div>

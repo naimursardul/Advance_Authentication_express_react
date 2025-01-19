@@ -42,16 +42,13 @@ function Navbar() {
               <NavLink to={"/"}>HOME</NavLink>
             </li>
             <li>
-              <NavLink to={"/services"}>SERVICES</NavLink>
+              <NavLink to={"/admin"}>ADMIN</NavLink>
             </li>
             <li>
-              <NavLink to={"/about"}>ABOUT</NavLink>
+              <NavLink to={"/moderator"}>MODERATOR</NavLink>
             </li>
             <li>
-              <NavLink to={"/contact"}>CONTACT</NavLink>
-            </li>
-            <li>
-              <NavLink to={"/profile"}>PROFILE</NavLink>
+              <NavLink to={"/editor"}>Editor</NavLink>
             </li>
             <ThemeController />
             {(!userExisted || !user) && (
@@ -76,16 +73,13 @@ function Navbar() {
             <NavLink to={"/"}>HOME</NavLink>
           </li>
           <li>
-            <NavLink to={"/services"}>SERVICES</NavLink>
+            <NavLink to={"/admin"}>ADMIN</NavLink>
           </li>
           <li>
-            <NavLink to={"/about"}>ABOUT</NavLink>
+            <NavLink to={"/moderator"}>MODERATOR</NavLink>
           </li>
           <li>
-            <NavLink to={"/contact"}>CONTACT</NavLink>
-          </li>
-          <li>
-            <NavLink to={"/profile"}>PROFILE</NavLink>
+            <NavLink to={"/editor"}>EDITOR</NavLink>
           </li>
         </ul>
       </div>
