@@ -3,7 +3,7 @@ import GoogleSignInSection from "../components/GoogleSignInSection";
 import InputSection from "../components/InputSection";
 import { MdEmail } from "react-icons/md";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import toast from "react-hot-toast";
 import { client } from "../utils/utils.js";
@@ -28,7 +28,7 @@ function Login() {
   const navigate = useNavigate();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
-  const { setUser } = useAuth();
+  const { setUser, userExisted } = useAuth();
 
   // SUBMIT FUNCTION
   const submitAction = async (data) => {
@@ -59,6 +59,7 @@ function Login() {
     }
   };
 
+  if (userExisted) return <Navigate to="/" />;
   return (
     <div className="w-full h-full flex justify-center items-center ">
       {loading && <Loader />}

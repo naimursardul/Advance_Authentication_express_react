@@ -16,7 +16,6 @@ const AuthProvider = ({ children }) => {
         !userExisted && localStorage.setItem("userExisted", true);
       }
     } catch (error) {
-      console.log(error);
       setUser(null);
       userExisted && localStorage.removeItem("userExisted");
     }
@@ -25,7 +24,6 @@ const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  console.log(user);
   return (
     <AuthContext.Provider
       value={{ user, setUser, authLoader: false, userExisted }}
@@ -35,11 +33,6 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-const useAuth = () => {
-  const value = useContext(AuthContext);
-  if (value.user === undefined) {
-    value.authLoader = true;
-  }
-  return value;
-};
+const useAuth = () => useContext(AuthContext);
+
 export { AuthContext, useAuth, AuthProvider };

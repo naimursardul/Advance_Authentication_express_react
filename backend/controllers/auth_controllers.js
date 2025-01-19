@@ -101,15 +101,9 @@ export const verifyEmail = async (req, res, next) => {
 // LOGOUT
 export const logout = async (req, res) => {
   try {
-    if (req.user?.provider && req.user.provider === "google") {
-      req.logout((err) => {
-        if (err) throw Error(err);
-      });
-      return res
-        .status(200)
-        .json({ success: true, message: `User logged out successfully.` });
-    }
-    res.clearCookie("token");
+    req.logout((err) => {
+      if (err) throw Error(err);
+    });
     return res
       .status(200)
       .json({ success: true, message: `User logged out successfully.` });

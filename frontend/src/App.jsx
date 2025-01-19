@@ -1,4 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import About from "./pages/About";
@@ -8,8 +10,7 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
-import { Toaster } from "react-hot-toast";
-import ProtectedRoute from "./components/ProtectedRoute";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -36,7 +37,8 @@ function App() {
                   element={<Profile />}
                 />
               }
-            />{" "}
+            />
+            <Route path="/*" element={<NotFoundPage />} />
           </Routes>
         </div>
         <Footer />

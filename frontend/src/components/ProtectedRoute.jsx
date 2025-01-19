@@ -1,17 +1,10 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../utils/AuthContext";
-import Loader from "./Loader";
 
 const ProtectedRoute = ({ element: Component, actionName }) => {
-  const { user, authLoader } = useAuth();
-  console.log(user);
+  const { user, userExisted } = useAuth();
 
-  // Loader to solve asynchronous effect
-  if (authLoader) {
-    return <Loader />;
-  }
-
-  if (!user) {
+  if (!userExisted) {
     // Redirect to login if user is not authenticated
     return <Navigate to="/login" />;
   }

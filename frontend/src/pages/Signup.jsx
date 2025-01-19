@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
 import { FaKey, FaUser } from "react-icons/fa";
 import { useState } from "react";
@@ -33,7 +33,7 @@ function Signup() {
   ];
 
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const { setUser, userExisted } = useAuth();
   const [data, setData] = useState({});
   const [isNext, setIsNext] = useState(false);
   const [code, setCode] = useState("");
@@ -95,6 +95,7 @@ function Signup() {
     }
   };
 
+  if (userExisted) return <Navigate to="/" />;
   return (
     <div className="w-full h-full flex justify-center items-center ">
       {loading && <Loader />}

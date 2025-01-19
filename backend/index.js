@@ -26,21 +26,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// app.use(
-//   session({
-//     secret: process.env.SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: true,
-//     proxy: true,
-//     cookie: {
-//       sameSite: "none",
-//       secure: process.env.NODE_ENV === "production",
-//       maxAge: 7 * 4 * 60 * 60 * 1000,
-//       httpOnly: true,
-//     },
-//   })
-// );
-
 app.use(
   session({
     secret: process.env.SESSION_SECRET, // Replace with a strong secret
@@ -56,7 +41,7 @@ app.use(
       secure: process.env.NODE_ENV === "production", // Send over HTTPS in production
       httpOnly: true, // Protect cookie from being accessed by client-side scripts
       maxAge: 1000 * 60 * 60 * 24 * 7, // Expiry: 7 days
-      sameSite: "none", // Adjust for cross-origin requirements if needed
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Adjust for cross-origin requirements if needed
     },
   })
 );
@@ -68,7 +53,7 @@ app.get("/", (req, res) => {
   res.send("Hello worldss!");
 });
 
-app.get("/profile", (req, res) => res.send({ user: req.user }));
+// app.get("/profile", (req, res) => res.send({ user: req.user }));
 
 app.use("/api/auth", authRouter);
 
