@@ -26,39 +26,40 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      proxy: true,
-      sameSite: "none",
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 7 * 4 * 60 * 60 * 1000,
-      httpOnly: true,
-    },
-  })
-);
-
 // app.use(
 //   session({
-//     secret: process.env.SESSION_SECRET, // Replace with a strong secret
-//     resave: false, // Avoid saving session if not modified
-//     saveUninitialized: false, // Avoid creating sessions until something is stored
-//     store: MongoStore.create({
-//       mongoUrl: process.env.MONGO_URI, // Reuse Mongoose connection
-//       collectionName: "sessions", // Optional
-//       ttl: 7 * 24 * 60 * 60, // Time-to-live in seconds
-//     }),
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//     proxy: true,
 //     cookie: {
-//       secure: process.env.NODE_ENV === "production", // Send over HTTPS in production
-//       httpOnly: true, // Protect cookie from being accessed by client-side scripts
-//       maxAge: 1000 * 60 * 60 * 24 * 7, // Expiry: 7 days
-//       sameSite: "none", // Adjust for cross-origin requirements if needed
+//       sameSite: "none",
+//       secure: process.env.NODE_ENV === "production",
+//       maxAge: 7 * 4 * 60 * 60 * 1000,
+//       httpOnly: true,
 //     },
 //   })
 // );
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET, // Replace with a strong secret
+    resave: false, // Avoid saving session if not modified
+    saveUninitialized: false, // Avoid creating sessions until something is stored
+    proxy: true,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI, // Reuse Mongoose connection
+      collectionName: "sessions", // Optional
+      ttl: 7 * 24 * 60 * 60, // Time-to-live in seconds
+    }),
+    cookie: {
+      secure: true, // Send over HTTPS in production
+      httpOnly: true, // Protect cookie from being accessed by client-side scripts
+      maxAge: 1000 * 60 * 60 * 24 * 7, // Expiry: 7 days
+      sameSite: "none", // Adjust for cross-origin requirements if needed
+    },
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
