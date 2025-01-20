@@ -1,9 +1,24 @@
+import { useAuth } from "../utils/AuthContext";
+
 function Profile() {
+  const { user } = useAuth();
   return (
-    <div>
-      Profile Lorem ipsum dolor sit, amet consectetur adipisicing elit. Incidunt
-      facilis eligendi maxime aliquid laboriosam aut dicta earum, corporis odit,
-      illum praesentium quia eos dolores deleniti labore veniam? Iure, in autem.
+    <div className="w-full h-full flex justify-center items-center">
+      <div className="bg-primary-content p-5 rounded-lg">
+        <h2 className="font-bold text-2xl">{user?.name}</h2>
+        <div className="flex gap-2">
+          <h3 className="font-bold">Email:</h3>
+          <p>admin@gmail.com</p>
+        </div>
+        <div className="flex gap-2">
+          <h3 className="font-bold">Role:</h3>
+          <p>{user?.role}</p>
+        </div>
+        <div className="flex gap-2">
+          <h3 className="font-bold">Last login:</h3>
+          <p>{Date(user?.lastLogin).slice(0, 24)}</p>
+        </div>
+      </div>
     </div>
   );
 }
