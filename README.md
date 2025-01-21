@@ -1,17 +1,17 @@
 <h2>Features:</h2>
-1. Google Oauth
-2. OTP-based credentials authentication (Email, password)
-4. RBAC - Role-Based Access Control
-5. 3-layer role-based Access control (client, server, database)
-6. Forgot Password feature for credentials auth
+1. Google Oauth <br/>
+2. OTP-based credentials authentication (Email, password)<br/>
+4. RBAC - Role-Based Access Control<br/>
+5. 3-layer role-based Access control (client, server, database)<br/>
+6. Forgot Password feature for credentials auth<br/>
 [Though it is a practice session, the sign-up and forgot password features will only be accessible to me.] 
 
 <h2>Technologies:</h2>
-1. Passport js (authentication)
-2. mongoDB (database)
-3. React js (front end)
-4. Express js (API)
-5. DaisyUI (UI library)
+1. Passport js (authentication)<br/>
+2. mongoDB (database)<br/>
+3. React js (front end)<br/>
+4. Express js (API)<br/>
+5. DaisyUI (UI library)<br/>
 
 
 <h3>Front End:</h3> 
