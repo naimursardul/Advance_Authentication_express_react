@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  credentialsLoginSuccess,
   forgotPassword,
   resetPassword,
   logout,
@@ -34,20 +35,7 @@ router.post(
   }
 );
 // login
-router.post("/login", passport.authenticate("local"), (req, res) => {
-  if (!req.user) {
-    res.status(200).json({
-      success: false,
-      message: `Email not verified successfully.`,
-      user: null,
-    });
-  }
-  res.status(200).json({
-    success: true,
-    message: `Email verified successfully.`,
-    user: req.user,
-  });
-});
+router.post("/login", passport.authenticate("local"), credentialsLoginSuccess);
 //logout
 router.get("/logout", logout);
 

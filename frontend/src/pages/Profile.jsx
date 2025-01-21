@@ -16,7 +16,7 @@ function Profile() {
         </div>
         <div className="flex gap-2">
           <h3 className="font-bold">Last login:</h3>
-          <p>{Date(user?.lastLogin).slice(0, 24)}</p>
+          <p>{String(user?.lastLogin)}</p>
         </div>
       </div>
     </div>

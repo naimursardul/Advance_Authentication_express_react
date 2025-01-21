@@ -12,7 +12,7 @@ import {
 dotenv.config();
 
 //  SIGN UP WITH EMAIL
-export const signup = async (req, res) => {
+const signup = async (req, res) => {
   const { email, password, name } = req.body;
 
   try {
@@ -67,7 +67,7 @@ export const signup = async (req, res) => {
 };
 
 // Verify Code and send welcome email
-export const verifyEmail = async (req, res, next) => {
+const verifyEmail = async (req, res, next) => {
   const { code } = req.body;
 
   try {
@@ -98,8 +98,25 @@ export const verifyEmail = async (req, res, next) => {
   }
 };
 
+// Credentials Login success
+const credentialsLoginSuccess = async (req, res) => {
+  if (!req.user) {
+    res.status(200).json({
+      success: false,
+      message: `Email not verified successfully.`,
+      user: null,
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    message: `Email verified successfully.`,
+    user: req.user,
+  });
+};
+
 // LOGOUT
-export const logout = async (req, res) => {
+const logout = async (req, res) => {
   try {
     req.logout((err) => {
       if (err) throw Error(err);
@@ -114,7 +131,7 @@ export const logout = async (req, res) => {
 };
 
 // FORGOT PASSWORD
-export const forgotPassword = async (req, res) => {
+const forgotPassword = async (req, res) => {
   const { email } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -147,7 +164,7 @@ export const forgotPassword = async (req, res) => {
 };
 
 // RESET PASSWORD
-export const resetPassword = async (req, res) => {
+const resetPassword = async (req, res) => {
   const { password } = req.body;
   const { resetToken } = req.params;
 
@@ -183,7 +200,7 @@ export const resetPassword = async (req, res) => {
 };
 
 // CHECK AUTH
-export const checkAuth = async (req, res) => {
+const checkAuth = async (req, res) => {
   try {
     if (!req.user) {
       return res
@@ -198,4 +215,14 @@ export const checkAuth = async (req, res) => {
       .status(400)
       .json({ success: false, message: error.message, user: null });
   }
+};
+
+export {
+  credentialsLoginSuccess,
+  forgotPassword,
+  resetPassword,
+  logout,
+  signup,
+  verifyEmail,
+  checkAuth,
 };
