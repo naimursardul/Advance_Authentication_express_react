@@ -17,14 +17,14 @@ function Control() {
     try {
       const res = await client.get("/user");
       console.log(res?.data);
-      if (!res?.data.success) {
+      if (res?.data.success && res?.data.allUser) {
         setSectionLoading(false);
-        return;
+        const newArr = res?.data.allUser.filter(
+          (user) => user?._id !== authUser?._id
+        );
+
+        return setAllUser(newArr);
       }
-      setSectionLoading(false);
-      return setAllUser(
-        res?.data.allUser.filter((user) => user._id !== authUser._id) // removing auth-user
-      );
     } catch (error) {
       console.log(error);
       setSectionLoading(false);
@@ -98,7 +98,7 @@ function Control() {
         <SectionLoader />
       ) : (
         <div className="flex flex-col gap-5">
-          {allUser?.length &&
+          {allUser?.length > 0 &&
             allUser.map((user, i) => (
               <li
                 key={i}
