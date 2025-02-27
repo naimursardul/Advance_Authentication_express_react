@@ -7,10 +7,11 @@ import {
   updateUser,
   deleteUser,
 } from "../controllers/user_controllers.js";
+import authMiddleWare from "../middleware.js";
 
-router.get("/user", getAllUser);
-router.get("/user/:id", getUserById);
-router.put("/user/:id", updateUser);
-router.delete("/user/:id", deleteUser);
+router.get("/", authMiddleWare, getAllUser);
+router.get("/:id", authMiddleWare, getUserById);
+router.put("/:id", authMiddleWare, updateUser);
+router.delete("/:id", authMiddleWare, deleteUser);
 
 export default router;

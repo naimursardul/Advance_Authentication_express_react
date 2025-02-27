@@ -3,11 +3,6 @@ import { User } from "../models/user_model.js";
 
 // Get all users
 async function getAllUser(req, res) {
-  if (!req?.user) {
-    return res
-      .status(200)
-      .json({ success: false, message: "You aren't authenticated." });
-  }
   try {
     const controller = req.user;
     if (controller.role !== "admin") {
@@ -32,11 +27,7 @@ async function getAllUser(req, res) {
 // Get user by id
 async function getUserById(req, res) {
   const { id } = req.params;
-  if (!req?.user) {
-    return res
-      .status(200)
-      .json({ success: false, message: "You aren't authenticated." });
-  }
+
   try {
     const controller = req.user;
     if (id !== controller?._id && controller.role !== "admin") {
@@ -67,11 +58,6 @@ async function getUserById(req, res) {
 async function updateUser(req, res) {
   const { id } = req.params;
   const { role, provider, ...others } = req.body;
-  if (!req?.user) {
-    return res
-      .status(200)
-      .json({ success: false, message: "You aren't authenticated." });
-  }
   try {
     const controller = req.user;
 
@@ -144,11 +130,6 @@ async function updateUser(req, res) {
 // Delete users
 async function deleteUser(req, res) {
   const { id } = req.params;
-  if (!req?.user) {
-    return res
-      .status(200)
-      .json({ success: false, message: "You aren't authenticated." });
-  }
 
   try {
     const controller = req.user;

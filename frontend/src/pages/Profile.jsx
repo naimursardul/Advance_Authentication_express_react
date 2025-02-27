@@ -8,7 +8,7 @@ function Profile() {
         <h2 className="font-bold text-2xl">{user?.name}</h2>
         <div className="flex gap-2">
           <h3 className="font-bold">Email:</h3>
-          <p>admin@gmail.com</p>
+          <p>{user?.email}</p>
         </div>
         <div className="flex gap-2">
           <h3 className="font-bold">Role:</h3>
@@ -16,7 +16,7 @@ function Profile() {
         </div>
         <div className="flex gap-2">
           <h3 className="font-bold">Last login:</h3>
-          <p>{String(user?.lastLogin)}</p>
+          <p>{new Date(user?.lastLogin).toString().slice(0, 21)}</p>
         </div>
       </div>
     </div>

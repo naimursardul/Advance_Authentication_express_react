@@ -11,6 +11,7 @@ import Navbar from "./components/Navbar";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 import NotFoundPage from "./pages/NotFoundPage";
+import AccessController from "./pages/AccessController";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/access_controller" element={<AccessController />} />
             {/* <Route path="/admin" element={<Admin />} /> */}
             <Route
               path="/profile"
@@ -62,7 +64,7 @@ function App() {
           position="top-center"
           toastOptions={{
             className:
-              "bg-base-100 text-base-content text-sm px-8 py-3 font-semibold",
+              "bg-base-100 text-base-content text-sm px-8 py-3 font-semibold z-[1000]",
             duration: 5000,
           }}
         />

@@ -42,6 +42,9 @@ function Navbar() {
               <NavLink to={"/"}>HOME</NavLink>
             </li>
             <li>
+              <NavLink to={"/access_controller"}>ACCESS</NavLink>
+            </li>
+            <li>
               <NavLink to={"/admin"}>ADMIN</NavLink>
             </li>
             <li>
@@ -71,6 +74,9 @@ function Navbar() {
         <ul className="menu menu-horizontal px-1 space-x-2">
           <li>
             <NavLink to={"/"}>HOME</NavLink>
+          </li>
+          <li>
+            <NavLink to={"/access_controller"}>ACCESS</NavLink>
           </li>
           <li>
             <NavLink to={"/admin"}>ADMIN</NavLink>

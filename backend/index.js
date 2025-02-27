@@ -7,6 +7,8 @@ import cors from "cors";
 import MongoStore from "connect-mongo";
 import authRouter from "./routes/auth_routes.js";
 import userRouter from "./routes/user_routes.js";
+import roleRouter from "./routes/role_routes.js";
+import permissionRouter from "./routes/permission_routes.js";
 import { connectDB } from "./db/db.js";
 import "./passport/google-passport.config.js";
 import "./passport/local-passport.config.js";
@@ -55,7 +57,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRouter);
-app.use("/api", userRouter);
+app.use("/api/user", userRouter);
+app.use("/api/role", roleRouter);
+app.use("/api/permission", permissionRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
