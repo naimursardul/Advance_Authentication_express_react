@@ -93,7 +93,6 @@ function Control() {
   return (
     <div>
       {loading && <Loader />}
-      <h1>Admin can only access this page.</h1>
       <h2 className="text-4xl font-bold mb-5">User lists</h2>
       {sectionLoading ? (
         <SectionLoader />
