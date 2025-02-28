@@ -54,7 +54,7 @@ function Navbar() {
               <NavLink to={"/editor"}>Editor</NavLink>
             </li>
             <ThemeController />
-            {(!userExisted || !user) && (
+            {!userExisted && !user && (
               <li className="space-y-3 mt-2">
                 <NavLink to={"/login"} className="btn btn-sm btn-outline">
                   Login

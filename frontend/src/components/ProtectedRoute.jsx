@@ -1,15 +1,18 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../utils/AuthContext";
+import Loader from "./Loader";
 
 const ProtectedRoute = ({ element: Component, roles }) => {
-  const { userExisted, user } = useAuth();
+  const { authLoader, user } = useAuth();
+  if (authLoader) {
+    return <Loader />;
+  }
 
-  if (!userExisted) {
+  if (!user) {
     // Redirect to login if user is not authenticated
     return <Navigate to="/login" />;
   }
 
-  console.log(1);
   if (!roles.includes(user?.role) && !roles.includes("all")) {
     console.log(2);
     // Redirect to home if the actionName is false

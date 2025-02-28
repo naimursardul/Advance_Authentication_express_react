@@ -5,4 +5,13 @@ const client = axios.create({
   withCredentials: true,
 });
 
+// const userLocalStorage = (action, userRole) => {
+//   const userExistedInLocal = localStorage.getItem("user");
+
+//   if (action === "add" && !userExistedInLocal) {
+//     localStorage.setItem("user", userRole);
+//     return;
+//   } else localStorage.removeItem("user");
+// };
+
 export { client };
