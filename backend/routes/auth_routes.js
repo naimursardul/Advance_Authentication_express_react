@@ -9,6 +9,9 @@ import {
   checkAuth,
 } from "../controllers/auth_controllers.js";
 import passport from "passport";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const router = express.Router();
 
@@ -59,8 +62,8 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: `${process.env.FRONTEND_URL}/login`,
     successRedirect: `${process.env.FRONTEND_URL}`,
+    failureRedirect: `${process.env.FRONTEND_URL}/login`,
   })
 );
 

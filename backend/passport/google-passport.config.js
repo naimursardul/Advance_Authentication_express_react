@@ -20,7 +20,13 @@ passport.use(
         email_verified: isVerified,
       } = profile._json;
       try {
-        const existedUser = await User.findOne({ email, provider: "google" });
+        const existedUser = await User.findOne({ email });
+        if (existedUser && existedUser?._doc?.provider !== "google") {
+          return done(
+            "User already registered through credentials method.",
+            null
+          );
+        }
         if (!existedUser) {
           const newUser = await User.create({
             name,
@@ -39,8 +45,8 @@ passport.use(
         await existedUser.save();
         return done(null, existedUser);
       } catch (error) {
-        console.log(error);
-        return done(error, null);
+        console.log(error?.message);
+        return done(error?.message, null);
       }
     }
   )

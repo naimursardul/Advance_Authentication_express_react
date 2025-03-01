@@ -12,6 +12,8 @@ import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 import NotFoundPage from "./pages/NotFoundPage";
 import AccessController from "./pages/AccessController";
+import ResetPassword from "./pages/ResetPassword";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   return (
@@ -27,6 +29,11 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route
+              path="/reset-password/:resetToken"
+              element={<ResetPassword />}
+            />
             <Route path="/access_controller" element={<AccessController />} />
             {/* <Route path="/admin" element={<Admin />} /> */}
             <Route

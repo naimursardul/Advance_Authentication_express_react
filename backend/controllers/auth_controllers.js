@@ -153,13 +153,13 @@ const forgotPassword = async (req, res) => {
       `${process.env.FRONTEND_URL}/reset-password/${resetToken}`
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: `Reset email sent successfully. Please, check your inbox.`,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: `Server error.` });
+    return res.status(500).json({ success: false, message: `Server error.` });
   }
 };
 

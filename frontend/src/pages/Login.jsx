@@ -34,7 +34,7 @@ function Login() {
   const submitAction = async (data) => {
     setLoading(true);
     const { email, password } = data;
-    if (!(email && password)) {
+    if (!email || !password) {
       setLoading(false);
       return toast.error("Please, fill in the form correctly.");
     }
