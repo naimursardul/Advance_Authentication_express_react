@@ -10,10 +10,10 @@ const AuthProvider = ({ children }) => {
 
   //   CHECKING AUTH
   const checkAuth = async () => {
-    console.log("first");
     try {
       const res = await client.get("/auth/check-auth");
       if (res?.data.user) {
+        console.log(res.data?.user);
         setUser(res.data?.user);
         !userExisted && localStorage.setItem("userExisted", true);
       }

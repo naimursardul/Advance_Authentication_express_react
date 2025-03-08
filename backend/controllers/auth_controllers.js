@@ -202,7 +202,7 @@ const resetPassword = async (req, res) => {
 // CHECK AUTH
 const checkAuth = async (req, res) => {
   try {
-    if (!req.user) {
+    if (!req?.user) {
       return res
         .status(400)
         .json({ success: false, message: "User not found.", user: null });
